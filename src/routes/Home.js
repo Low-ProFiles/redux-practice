@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
-import { actionCreators } from "../store";
+import { add } from "../store";
 import Todo from "../components/Todo";
 
 function Home({ toDos, addTodo }) {
@@ -16,7 +16,7 @@ function Home({ toDos, addTodo }) {
   }
   return (
     <>
-      <Link to={'/'} style={{textDecoration:"none", color:"black"}}>
+      <Link to={'/'} style={{ textDecoration: "none", color: "black" }}>
         <h1>To Do</h1>
       </Link>
       <form onSubmit={onSubmit}>
@@ -35,7 +35,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return { addTodo: text => dispatch(actionCreators.addTodo(text)) }
+  return { addTodo: text => dispatch(add(text)) }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
