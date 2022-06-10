@@ -1,30 +1,41 @@
 import React, { useState } from "react";
-import {connect} from 'react-redux';
+import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+import { actionCreators } from "../store";
+import Todo from "../components/Todo";
 
-const Home = (props) => {
-  console.log(props)
+function Home({ toDos, addTodo }) {
   const [text, setText] = useState("");
   const onChange = (e) => {
     setText(e.target.value);
   }
   const onSubmit = (e) => {
     e.preventDefault();
+    addTodo(text);
     setText("");
   }
   return (
     <>
-      <h1>To Do</h1>
+      <Link to={'/'} style={{textDecoration:"none", color:"black"}}>
+        <h1>To Do</h1>
+      </Link>
       <form onSubmit={onSubmit}>
         <input type="text" value={text} onChange={onChange} />
         <button>Add</button>
       </form>
-      <ul></ul>
+      <ul>{toDos.map(toDo => (<Todo {...toDo} key={toDo.id} />))}</ul>
     </>
   );
 }
 
-function getCurrentState(state){
-  return{toDOs: state}
+//Redux state로부터 home component에 prop으로써 전달
+function mapStateToProps(state) {
+  //객체로 전달
+  return { toDos: state }
 }
 
-export default connect(getCurrentState)(Home);
+function mapDispatchToProps(dispatch) {
+  return { addTodo: text => dispatch(actionCreators.addTodo(text)) }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
